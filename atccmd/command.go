@@ -488,7 +488,8 @@ func (cmd *RunCommand) constructAPIMembers(
 	if err != nil {
 		return nil, err
 	}
-	engine := cmd.constructEngine(workerClient, resourceFetcher, resourceFactory, dbResourceCacheFactory, variablesFactory, defaultLimits)
+
+	engine := cmd.constructEngine(workerClient, resourceFetcher, resourceFactory, dbResourceCacheFactory, dbResourceConfigFactory, variablesFactory, defaultLimits)
 
 	dbResourceConfigCheckSessionFactory := db.NewResourceConfigCheckSessionFactory(dbConn, lockFactory)
 	radarSchedulerFactory := pipelines.NewRadarSchedulerFactory(
@@ -1132,7 +1133,8 @@ func (cmd *RunCommand) constructEngine(
 	workerClient worker.Client,
 	resourceFetcher resource.Fetcher,
 	resourceFactory resource.ResourceFactory,
-	dbResourceCacheFactory db.ResourceCacheFactory,
+	resourceCacheFactory db.ResourceCacheFactory,
+	resourceConfigFactory db.ResourceConfigFactory,
 	variablesFactory creds.VariablesFactory,
 	defaultLimits atc.ContainerLimits,
 ) engine.Engine {
@@ -1140,7 +1142,8 @@ func (cmd *RunCommand) constructEngine(
 		workerClient,
 		resourceFetcher,
 		resourceFactory,
-		dbResourceCacheFactory,
+		resourceCacheFactory,
+		resourceConfigFactory,
 		variablesFactory,
 		defaultLimits,
 	)
